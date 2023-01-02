@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "avring-of-fire": {
+      "hosting": {
+        "ringoffire": [
+          "avring-of-fire"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "avring-of-fire"
+  }
+}
