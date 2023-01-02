@@ -14,11 +14,12 @@ export class GameComponent implements OnInit {
   pickCardAnimation = false;
   currentCard: string = '';
   game!: Game;
+
   games$: Observable<any>;
   Games:Array<any>;
   newgame:'';
 
-  constructor(firestore: Firestore, public dialog: MatDialog) {
+  constructor(private firestore: Firestore, public dialog: MatDialog) {
    const coll = collection(firestore, 'games');
     this.games$ = collectionData(coll);
 
@@ -35,9 +36,9 @@ export class GameComponent implements OnInit {
 
   newGame() {
     this.game = new Game();
-   /*this.Games.collection('games').add({'Hallo': 'Welt'});*/
+   
    const coll = collection(this.firestore, 'games');
-   setDoc(doc(coll), {name: this.newgame});
+   setDoc(doc(coll), {'Hallo': 'Welt'});
   }
 
   takeCard() {
