@@ -3,7 +3,7 @@ import { Game } from 'src/modules/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { Observable } from 'rxjs';
-import { collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { collection, collectionData, Firestore, doc, setDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-game',
@@ -14,7 +14,7 @@ export class GameComponent implements OnInit {
   pickCardAnimation = false;
   currentCard: string = '';
   game!: Game;
-  games$: Observable<any>;
+  games$: Observable<any[]>;
   games:Array<any>;
   newgame:'';
   constructor(firestore: Firestore, public dialog: MatDialog) {
@@ -33,7 +33,7 @@ export class GameComponent implements OnInit {
 
   newGame() {
     this.game = new Game();
-    this.games.collection('games').add({'Hallo': 'Welt'});
+    this.games['collection']('games').add({'Hallo': 'Welt'});
   }
 
   takeCard() {
