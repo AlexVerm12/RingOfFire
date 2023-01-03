@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/modules/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
-import { Observable } from 'rxjs';
-import { collection, collectionData, Firestore, doc, setDoc } from '@angular/fire/firestore';
+import { ActivatedRoute } from '@angular/router';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-game',
@@ -14,36 +14,46 @@ export class GameComponent implements OnInit {
   pickCardAnimation = false;
   currentCard: string = '';
   game!: Game;
+  gameId: any;
 
-  games$: Observable<any>;
-  Games:Array<any>;
-  newgame:'';
-
-  constructor(private firestore: Firestore, public dialog: MatDialog) {
-   const coll = collection(firestore, 'games');
-    this.games$ = collectionData(coll);
-
-    this.games$.subscribe((newgame) => {
-      
-      this.Games = newgame;
-      console.log('Neues spiel:', this.Games)
-    });
+  constructor(private route: ActivatedRoute, private firestore: AngularFirestore, public dialog: MatDialog) {
+   
   }
 
   ngOnInit(): void {
     this.newGame();
+    this.route.params.subscribe((params)=>{
+      console.log(params['id']);
+      this.gameId = params['id'];
+      this
+        .firestore
+        .collection('games')
+        .doc(this.gameId)
+        .valueChanges()
+        .subscribe((game: any) => {
+          this.setJsonElements(game);
+          console.log('Neues spiel:', this.game)
+        });
+   
+  });
+  }
+
+  setJsonElements(game: any) {
+    this.game.players = game.players;
+    this.game.stack = game.stack;
+    this.game.playedCards = game.playedCards;
+    this.game.currentPlayer = game.currentPlayer;  
   }
 
   newGame() {
     this.game = new Game();
    
-   const coll = collection(this.firestore, 'games');
-   setDoc(doc(coll), {'Hallo': 'Welt'});
   }
 
   takeCard() {
     if (!this.pickCardAnimation) {
       this.currentCard = this.game.stack.pop()!;
+      this.saveGame();
       this.pickCardAnimation = true;
       this.game.currentPlayer++;
       this.game.currentPlayer =
@@ -51,6 +61,7 @@ export class GameComponent implements OnInit {
       setTimeout(() => {
         this.game.playedCards.push(this.currentCard);
         this.pickCardAnimation = false;
+        this.saveGame();
       }, 1500);
     }
   }
@@ -61,8 +72,17 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((name) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.saveGame(); 
       }
     });
+  }
+
+  saveGame(){
+    this
+        .firestore
+        .collection('games')
+        .doc(this.gameId)
+        .update(this.game.toJson())
   }
 }
 
