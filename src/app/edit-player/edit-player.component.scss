@@ -1,0 +1,20 @@
+.profile-picture{
+    height: 70px;
+    width: 70px;
+    border-radius: 100%;
+    cursor: pointer;
+    margin: 4px;
+
+    &:hover{
+        filter: brightness(1.1);
+    }
+}
+.edit-dialog-container{
+    text-align: center;
+}
+
+.edit-button{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+}

@@ -1,6 +1,26 @@
-body{
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+@media (max-width: 750px) {
+  .hide-mobile {
+    display: none;
+  }
+}
+
+
+  @media (min-width: 750px) {
+    .hide-desktop {
+      display: none;
+    }
+  }
+

@@ -1,0 +1,21 @@
+<div class="edit-dialog-container">
+  <h1 mat-dialog-title>Choose your Avatar</h1>
+  <img
+    class="profile-picture"
+    [mat-dialog-close]="picture"
+    *ngFor="let picture of allProfilePicture"
+    src="./../../assets/img/{{ picture }}"
+    alt=""
+  />
+  <div mat-dialog-actions class="edit-button">
+    <button mat-button (click)="onNoClick()">close</button>
+    <button
+      mat-button
+      color="warn"
+      [mat-dialog-close]="'DELETE'"
+      cdkFocusInitial
+    >
+      Delete player
+    </button>
+  </div>
+</div>
