@@ -5,13 +5,14 @@ import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player
 import { ActivatedRoute } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { EditPlayerComponent } from '../edit-player/edit-player.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit{
   game!: Game;
   gameId: any;
   gameOver = false;
@@ -19,7 +20,8 @@ export class GameComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private firestore: AngularFirestore,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +36,15 @@ export class GameComponent implements OnInit {
           this.setJsonElements(game);
         });
     });
+  }
+
+  refresh(){
+    let game = new Game();
+    this.gameOver = false;
+    this.firestore.collection('games').add(game.toJson()).then((gameInfo:any)=> {
+      this.router.navigateByUrl('/game/'+ gameInfo.id);
+    });
+    
   }
 
   setJsonElements(game: any) {

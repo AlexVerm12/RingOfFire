@@ -21,7 +21,7 @@
 
 <div *ngIf="gameOver" class="game-over">
   <img src="./assets/img/GameOver.svg" alt="" />
-  <button href="./ringoffire/index.html" class="new-game-button">New game</button>
+  <button (click)="refresh()" class="new-game-button">New game</button>
 </div>
 
 <div *ngIf="!gameOver" class="field">
